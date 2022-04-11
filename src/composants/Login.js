@@ -2,31 +2,41 @@ import '../App.css';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import Axios from "axios";
+import React from 'react';
+import {useNavigate} from 'react-router-dom';
 
 function Login() {
     
-  const [mail,setMail] = useState("");
+  const [mail,setMail] = useState("");    
   const [mdp,setMdp] = useState("");
-
   const [loginStatus, setLoginStatus] = useState("");
+  
+  const [change, setChange] = useState("");
+  const navigate = useNavigate();
+  
   
   const login = () => {
     Axios.post("http://localhost:9000/login", {
-      mail: mail,
-      mdp: mdp,
+      email: mail,
+      password: mdp,
     }).then((response) => {
-      
-      if (response.data.message){ 
+      console.log(response.data.status)
+      if (response.data.status==="ERROR"){ 
         setLoginStatus("Authentification échoué");
-      } else {
+        setChange("");
+      } if (response.data.status==="SUCCESS"){
         setLoginStatus("Authentification réussie");
+        setChange(navigate("/trading"));  
       }
-      
-    });
-  };
+      });
+};
+
+
+
+
   
   return (
-        <Container className='login_container'>
+        <Container className='login_container' id="container">
         <Row>
           <Col className='login_form'>
           <Form>
@@ -50,7 +60,9 @@ function Login() {
           </Col>
         </Row>
         <Row>
-          <Col className='login_button'><Button variant="outline-light" onClick={login}>Connection</Button>{' '}</Col>
+          <Col className='login_button'>
+          {change} <Col className='login_button'><Button variant="outline-light" onClick={login}>Connection</Button>{' '}</Col>
+          </Col>
         </Row>
         <Row>
           <Col>{loginStatus}</Col>

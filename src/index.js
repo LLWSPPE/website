@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Login from './composants/Login';
 import 'bootstrap/dist/css/bootstrap.css';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Trading from './composants/Trading';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
+    <Routes>
     <Route path='/trading' element={<Trading />} />
+    </Routes>
     <Login />
-    <App />
     </Router>
   </React.StrictMode>,
   document.getElementById('root')

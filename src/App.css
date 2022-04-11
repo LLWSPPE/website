@@ -27,7 +27,7 @@ canvas
   position: absolute;
   left: 25%;
   top: 19%;
-  background-color: #81C8F5;
+  background-color: rgba(103,210,252,.4);
   display: grid;
   align-items: center;
 }
@@ -44,8 +44,94 @@ canvas
   align-items: center;
 }
 
-.test
+.trading_back
 {
-  color: red;position: fixed;
+  background-color: white;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
+
+.trading_name
+{
+  height: 100%;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+}
+
+.trading_name_1.col-xl-2 {
+  overflow-y: scroll;
+  height: 100%;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+/* scrollbar */
+
+.trading_graphe.col-xl-8 {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.trading_name.row {
+  margin: 0;
+}
+
+.trading_back.container-fluid {
+  padding: 0;
+}
+
+.trading_interface.col
+{
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow-y: scroll;
+  height: 100%;
+  cursor: pointer;
+}
+
+.title_right
+{
+  font-weight: 600;
+  font-size: 30px;
+}
+
+.valeur_right
+{
+  font-weight: 400;
+  color: #b3b3b3;
+}
+
+.name_valeur_right
+{
+  font-weight: 600;
+}
+
+
+
+
+
+
 
