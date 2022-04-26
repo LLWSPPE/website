@@ -6,12 +6,15 @@ import Login from './composants/Login';
 import 'bootstrap/dist/css/bootstrap.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Trading from './composants/Trading';
+import Register from './composants/Register';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
     <Routes>
+    <Route path='/login' element={<Login />} />
     <Route path='/trading' element={<Trading />} />
+    <Route path='/register' element={<Register />} />
     </Routes>
     <Login />
     </Router>

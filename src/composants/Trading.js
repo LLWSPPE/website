@@ -6,7 +6,7 @@ import { Chart }            from 'react-chartjs-2'
 import {Col, Container, Row, Button, Form} from 'react-bootstrap';
 import Axios from "axios";
 import { useState } from 'react';
-
+import Session from 'react-session-api';
 
 
 function Trading(){
@@ -42,8 +42,28 @@ const data_chart = {
 
     fetchData();
   }, [])
+  
+  let connect = Session.get("connect");
+  console.log(connect)
 
+  let budget = Session.get("budget");
+  console.log(budget)
 
+  let id = Session.get("id");
+  console.log(id)
+
+  if (connect !== "oui")
+  {
+    return( 
+      <Container fluid className='trading_back'>
+      Veuillez vous connectez
+      </Container>
+              
+              
+      );
+  }
+  else
+  {
   return( 
     <Container fluid className='trading_back'>
     <Row className='trading_name'>
@@ -89,6 +109,12 @@ const data_chart = {
     <Col className='name_valeur_right'>{stock_volume}</Col>
   </Row>
   <Row>
+    <Col className='valeur_right'>budget</Col>
+  </Row>
+  <Row>
+    <Col className='name_valeur_right'>{budget}</Col>
+  </Row>
+  <Row>
     <Col><Button variant="outline-dark">Achat</Button></Col>
     <Col>
     <Form.Control
@@ -115,7 +141,7 @@ const data_chart = {
   </Container>
             
             
-    );
+    ); }
 }
 
 export default Trading;

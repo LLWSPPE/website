@@ -4,16 +4,20 @@ import { useState } from 'react';
 import Axios from "axios";
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
+import Session from 'react-session-api';
+import {Link} from 'react-router-dom';
 
 function Login() {
     
   const [mail,setMail] = useState("");    
   const [mdp,setMdp] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
-  
   const [change, setChange] = useState("");
   const navigate = useNavigate();
-  
+  const [budget, setBudget] = useState("");
+  const [id, setId] = useState("");
+  Session.set("budget", budget);
+  Session.set("id", id);
   
   const login = () => {
     Axios.post("http://localhost:9000/login", {
@@ -26,11 +30,21 @@ function Login() {
         setChange("");
       } if (response.data.status==="SUCCESS"){
         setLoginStatus("Authentification réussie");
+        Session.set("connect", "oui");
         setChange(navigate("/trading"));  
+        const test = response.data.result;
+        test.map(item =>(
+          setBudget(item.budget), setId(item.id)
+        ))
+        
       }
       });
 };
 
+
+const disable = () => {
+  document.getElementById("container").style.visibility = "hidden";
+}
 
 
 
@@ -62,6 +76,11 @@ function Login() {
         <Row>
           <Col className='login_button'>
           {change} <Col className='login_button'><Button variant="outline-light" onClick={login}>Connection</Button>{' '}</Col>
+          </Col>
+        </Row>
+        <Row>
+          <Col className='login_button'>
+          <Link to="/register"><Col className='login_button'><Button variant="outline-light" onClick={disable}>Inscription</Button>{' '}</Col></Link>
           </Col>
         </Row>
         <Row>
