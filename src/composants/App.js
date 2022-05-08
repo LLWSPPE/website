@@ -4,22 +4,22 @@ import Trading from './User/Trading';
 import Register from './Auth/Register';
 import Login from './Auth/Login';
 import { render } from '@testing-library/react';
+import {ReactSession} from "react-client-session";
 
  
 class App extends Component{
   render() {
       return(
-        <React.StrictMode>
+        <>
             <Router>
               <Routes>
                 <Route path='/login' element={<Login />} />
                 <Route path='/trading' element={<Trading />} />
                 <Route path='/register' element={<Register />} />
               </Routes>
-              <Login />
             </Router>
           
-          </React.StrictMode>
+          </>
     )
   };
 }
