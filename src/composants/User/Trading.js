@@ -3,15 +3,15 @@ import React, { useEffect } from 'react';
 import {Line} from "react-chartjs-2"
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart }            from 'react-chartjs-2'
-import {Col, Container, Row, Button, Form, Navbar, Nav, Badge, Modal} from 'react-bootstrap';
+import {Col, Container, Row, Button, Form, Navbar, Nav, Badge, Modal, ListGroup} from 'react-bootstrap';
 import Axios from "axios";
 import { useState } from 'react';
 import {ReactSession} from "react-client-session";
 import  { Navigate } from 'react-router-dom'
 
-const user = ReactSession.get('user')
-
 function Trading(){
+
+  document.title = 'Salle de marché : Accueil'
 
   /// liste nom entreprise
   const [data_name, setData_name] = useState([]);
@@ -45,7 +45,7 @@ const chart_options = {
   }
 }
 
-const user = ReactSession.get('user')
+  const user = ReactSession.get('user')
 
 
 /// graphe
@@ -103,6 +103,9 @@ const user = ReactSession.get('user')
               <Col className='panelActions'>
                 {full_name !== "" &&
                     <>
+                      <Row>
+                        <h2 className="mt-2">Opérations</h2>
+                      </Row>
                       <Row className='mb-2'>
                         <Col>
                           <Form.Control
@@ -138,10 +141,10 @@ const user = ReactSession.get('user')
 
               </Col>
 
-              <Row>
-                <h2 className="mt-2">Budget : <Badge bg="primary">{user["budget"]} €</Badge></h2>
+              <Row className="mt-3">
+                <h3 className="mt-2">Mon budget : <Badge bg="primary">{user["budget"]} €</Badge></h3>
               </Row>
-              
+
             </Col>
 
             <Col className='trading_interface'>
@@ -194,6 +197,14 @@ const user = ReactSession.get('user')
 }
 
 function MyVerticallyCenteredModal(props) {
+  const portefeuille = ReactSession.get('portefeuille')
+
+  const listePortefeuille = []
+
+  portefeuille.map(item => {
+    listePortefeuille.push(<ListGroup.Item><strong>{item.full_name}</strong> (ISIN: {item.isin_code} - Quantité : <Badge bg="primary">{item.quantite}</Badge> </ListGroup.Item>)
+  });
+
   return (
     <Modal
       {...props}
@@ -203,19 +214,16 @@ function MyVerticallyCenteredModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Modal heading
+          Portefeuill d'actifs
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>Centered Modal</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-          consectetur ac, vestibulum at eros.
-        </p>
+          <ListGroup>
+            {listePortefeuille}
+          </ListGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button variant="danger" onClick={props.onHide}>Fermer</Button>
       </Modal.Footer>
     </Modal>
   );

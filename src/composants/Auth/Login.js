@@ -18,8 +18,9 @@ function Login() {
   const [loginStatus, setLoginStatus] = useState("");
   const [change, setChange] = useState("");
   const navigate = useNavigate();
-  const [portefeuille, setPortefeuille] = useState("")
+
   const user = ReactSession.get('user')
+  const portefeuille = ReactSession.get('portefeuille')
 
   const login = () => {
     Axios.post("http://localhost:9000/login", {
@@ -35,14 +36,17 @@ function Login() {
         }
         if (response.data.status==="SUCCESS"){
           setLoginStatus("Authentification réusie");
-          Session.set("connect", "oui");
 
           let resultat = response.data.result;
 
           ReactSession.set('user', resultat[0])
+          Axios.get('http://localhost:9000/users/portefeuille/'+ReactSession.get('user')['id']).then(result => {
+            ReactSession.set('portefeuille', result.data.result)
+            console.log(ReactSession.get('user'))
+            console.log(ReactSession.get('portefeuille'))
+            setChange(navigate("/trading"));
+          })
 
-          console.log(ReactSession.get('user'))
-          setChange(navigate("/trading"));
 
         }
       });
