@@ -22,14 +22,13 @@ canvas
 }
 
 .login_container.container {
-  width: 50%;
-  height: 60%;
-  position: absolute;
-  left: 25%;
-  top: 19%;
+  width: 500px;
+  height: 300px;
   background-color: rgba(103,210,252,.4);
-  display: grid;
   align-items: center;
+  padding: 20px;
+  position: relative;
+  top: 30%;
 }
 
 .login_form
@@ -106,7 +105,7 @@ canvas
   display: grid;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  text-align: right;
   overflow-y: scroll;
   height: 100%;
 }
@@ -139,8 +138,31 @@ canvas
   color: white;
 }
 
+.enterprise-item {
+  padding: 10px;
+  border-radius: 10px;
+}
 
+.enterprise-item:hover {
+  cursor: pointer;
+  padding-left: 15px;
+  background-color: #45aaf2;
+  font-weight: bold;
+  transition: 0.2s ease-in-out;
+}
 
+.navbar > .container {
+  margin: inherit;
+  max-width: 100%;
+}
+
+.spanbadge {
+  margin-right: 20px;
+}
+
+.badge-budget {
+  margin: 0;
+}
 
 
 
