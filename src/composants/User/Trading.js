@@ -23,6 +23,7 @@ function Trading(){
   const [stock_volume,setStock_volume] = useState();
 
   const [modalShow, setModalShow] = useState(false);
+  const [mouvementShow, setMouvementShow] = useState(false);
   
 /// graphe
 
@@ -70,16 +71,21 @@ const chart_options = {
   else {
     return(
         <Container fluid className='trading_back'>
-          <MyVerticallyCenteredModal
+          <FenetrePortefeuille
               show={modalShow}
               onHide={() => setModalShow(false)}
+          />
+
+          <FenetreMouvements
+              show={mouvementShow}
+              onHide={() => setMouvementShow(false)}
           />
           <Navbar bg="primary" variant="dark">
             <Container>
               <Navbar.Brand href="">LLWS</Navbar.Brand>
               <Nav className="me-auto">
                 <Nav.Link onClick={() => setModalShow(true)} >Mon portefeuille</Nav.Link>
-                <Nav.Link href="#pricing">Mes opérations</Nav.Link>
+                <Nav.Link onClick={() => setMouvementShow(true)}>Mes opérations</Nav.Link>
               </Nav>
               <Navbar.Toggle />
               <Navbar.Collapse className="justify-content-end">
@@ -196,7 +202,7 @@ const chart_options = {
   }
 }
 
-function MyVerticallyCenteredModal(props) {
+function FenetrePortefeuille(props) {
   const portefeuille = ReactSession.get('portefeuille')
 
   const listePortefeuille = []
@@ -228,5 +234,40 @@ function MyVerticallyCenteredModal(props) {
     </Modal>
   );
 }
+
+function FenetreMouvements(props) {
+  const mouvements = ReactSession.get('mouvements')
+  console.log(mouvements)
+
+  const listeMouvements = []
+
+  mouvements.map(item => {
+    listeMouvements.push(<ListGroup.Item variant={item.type_mouvement === "BUY" ? "warning" : "success"}><strong>{item.type_mouvement === "BUY" ? "ACHAT" : "VENTE"}</strong> (ISIN: {item.isin_code} - Montant : <Badge bg="primary">{item.montant} € </Badge> Quantité : <Badge bg="primary" pill>{item.quantite}</Badge></ListGroup.Item>)
+  });
+
+  return (
+      <Modal
+          {...props}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Mes opérations
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ListGroup>
+            {listeMouvements}
+          </ListGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={props.onHide}>Fermer</Button>
+        </Modal.Footer>
+      </Modal>
+  );
+}
+
 
 export default Trading;

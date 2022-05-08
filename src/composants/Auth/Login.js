@@ -42,9 +42,11 @@ function Login() {
           ReactSession.set('user', resultat[0])
           Axios.get('http://localhost:9000/users/portefeuille/'+ReactSession.get('user')['id']).then(result => {
             ReactSession.set('portefeuille', result.data.result)
-            console.log(ReactSession.get('user'))
-            console.log(ReactSession.get('portefeuille'))
-            setChange(navigate("/trading"));
+            Axios.get('http://localhost:9000/users/'+ReactSession.get('user')['id']+'/mouvements/').then(result => {
+              ReactSession.set('mouvements', result.data.mouvements)
+              console.log(ReactSession.get('mouvements'))
+              setChange(navigate("/trading"));
+            })
           })
 
 
@@ -89,7 +91,7 @@ function Login() {
 
                 <Row className="mt-2">
                   <Button className="btn btn-success" onClick={login}>Connexion</Button>
-                  <Link to="/page2"><Button className="btn btn-primary">Inscription</Button></Link>
+                  <Link to="/page2" className="btnregisterlink"><Button className="btn btn-warning btnregister">Inscription</Button></Link>
                 </Row>
 
               </Form>
