@@ -1,0 +1,74 @@
+import {ReactSession} from "react-client-session";
+import {Badge, Button, ListGroup, Modal} from "react-bootstrap";
+import React from "react";
+import SessionManager from "../Session/Session";
+
+
+//Fenêtre modale pour afficher le portefeuille
+export function FenetrePortefeuille(props) {
+    const portefeuille = SessionManager.getPortefeuille()
+
+    const listePortefeuille = []
+
+    portefeuille.map(item => {
+        listePortefeuille.push(<ListGroup.Item><strong>{item.full_name}</strong> (ISIN: {item.isin_code} - Quantité : <Badge bg="primary">{item.quantite}</Badge> </ListGroup.Item>)
+    });
+
+    return (
+        <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Portefeuill d'actifs
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <ListGroup>
+                    {listePortefeuille}
+                </ListGroup>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="danger" onClick={props.onHide}>Fermer</Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}
+
+//Fenêtre modale pour afficher les mouvements (opérations)
+export function FenetreMouvements(props) {
+    const mouvements = SessionManager.getMouvements()
+    console.log(mouvements)
+
+    const listeMouvements = []
+
+    mouvements.map(item => {
+        listeMouvements.push(<ListGroup.Item variant={item.type_mouvement === "BUY" ? "warning" : "success"}><strong>{item.type_mouvement === "BUY" ? "ACHAT" : "VENTE"}</strong> (ISIN: {item.isin_code} - Montant : <Badge bg="primary">{item.montant} € </Badge> Quantité : <Badge bg="primary" pill>{item.quantite}</Badge></ListGroup.Item>)
+    });
+
+    return (
+        <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+        >
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
+                    Mes opérations
+                </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <ListGroup>
+                    {listeMouvements}
+                </ListGroup>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="danger" onClick={props.onHide}>Fermer</Button>
+            </Modal.Footer>
+        </Modal>
+    );
+}

@@ -1,17 +1,18 @@
 import '../App.css';
 import React, { useEffect } from 'react';
-import {Line} from "react-chartjs-2"
+import {Line } from "react-chartjs-2"
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Chart }            from 'react-chartjs-2'
-import {Col, Container, Row, Button, Form, Navbar, Nav, Badge, Modal, ListGroup} from 'react-bootstrap';
+import {Col, Container, Row, Button, Form, Navbar, Nav, Badge} from 'react-bootstrap';
 import Axios from "axios";
 import { useState } from 'react';
-import {ReactSession} from "react-client-session";
-import  { Navigate } from 'react-router-dom'
+import { FenetreMouvements, FenetrePortefeuille } from './Modals'
+import SessionManager from "../Session/Session";
 
 function Trading(){
 
   document.title = 'Salle de marché : Accueil'
+  console.log(SessionManager.getUser())
 
   /// liste nom entreprise
   const [data_name, setData_name] = useState([]);
@@ -46,7 +47,7 @@ const chart_options = {
   }
 }
 
-  const user = ReactSession.get('user')
+  const user = SessionManager.getAuth('user')
 
 
 /// graphe
@@ -63,12 +64,6 @@ const chart_options = {
     fetchData();
   }, [])
 
-  if(!user){
-    return(
-      <Navigate to="/login" />
-    )
-  }
-  else {
     return(
         <Container fluid className='trading_back'>
           <FenetrePortefeuille
@@ -199,75 +194,8 @@ const chart_options = {
           </Row>
         </Container>
     );
-  }
 }
 
-function FenetrePortefeuille(props) {
-  const portefeuille = ReactSession.get('portefeuille')
-
-  const listePortefeuille = []
-
-  portefeuille.map(item => {
-    listePortefeuille.push(<ListGroup.Item><strong>{item.full_name}</strong> (ISIN: {item.isin_code} - Quantité : <Badge bg="primary">{item.quantite}</Badge> </ListGroup.Item>)
-  });
-
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Portefeuill d'actifs
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-          <ListGroup>
-            {listePortefeuille}
-          </ListGroup>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="danger" onClick={props.onHide}>Fermer</Button>
-      </Modal.Footer>
-    </Modal>
-  );
-}
-
-function FenetreMouvements(props) {
-  const mouvements = ReactSession.get('mouvements')
-  console.log(mouvements)
-
-  const listeMouvements = []
-
-  mouvements.map(item => {
-    listeMouvements.push(<ListGroup.Item variant={item.type_mouvement === "BUY" ? "warning" : "success"}><strong>{item.type_mouvement === "BUY" ? "ACHAT" : "VENTE"}</strong> (ISIN: {item.isin_code} - Montant : <Badge bg="primary">{item.montant} € </Badge> Quantité : <Badge bg="primary" pill>{item.quantite}</Badge></ListGroup.Item>)
-  });
-
-  return (
-      <Modal
-          {...props}
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Mes opérations
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ListGroup>
-            {listeMouvements}
-          </ListGroup>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={props.onHide}>Fermer</Button>
-        </Modal.Footer>
-      </Modal>
-  );
-}
 
 
 export default Trading;

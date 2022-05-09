@@ -1,12 +1,10 @@
 import '../App.css';
 import { Container, Row, Col, Form, Button, Alert, FloatingLabel } from 'react-bootstrap';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import Axios from "axios";
 import React from 'react';
-import {useNavigate} from 'react-router-dom';
-import Session from 'react-session-api';
-import { ReactSession } from 'react-client-session';
-import {Link, Navigate} from 'react-router-dom';
+import SessionManager from '../Session/Session';
+import {Link} from 'react-router-dom';
 
 function Login() {
 
@@ -17,17 +15,13 @@ function Login() {
   const [mdp,setMdp] = useState("");
   const [loginStatus, setLoginStatus] = useState("");
   const [change, setChange] = useState("");
-  const navigate = useNavigate();
 
-  const user = ReactSession.get('user')
-  const portefeuille = ReactSession.get('portefeuille')
 
   const login = () => {
     Axios.post("http://localhost:9000/login", {
       email: mail,
       password: mdp,
     }).then((response) => {
-        console.log(response.data.status)
         if (response.data.status==="ERROR")
         {
           setLoginStatus(response.data.message);
@@ -39,70 +33,61 @@ function Login() {
 
           let resultat = response.data.result;
 
-          ReactSession.set('user', resultat[0])
-          Axios.get('http://localhost:9000/users/portefeuille/'+ReactSession.get('user')['id']).then(result => {
-            ReactSession.set('portefeuille', result.data.result)
-            Axios.get('http://localhost:9000/users/'+ReactSession.get('user')['id']+'/mouvements/').then(result => {
-              ReactSession.set('mouvements', result.data.mouvements)
-              console.log(ReactSession.get('mouvements'))
-              setChange(navigate("/trading"));
+          SessionManager.setAuth(resultat[0])
+
+          Axios.get('http://localhost:9000/users/portefeuille/'+SessionManager.getId()).then(result => {
+            SessionManager.setPortefeuille(result.data.result)
+
+            Axios.get('http://localhost:9000/users/'+SessionManager.getId()+'/mouvements/').then(result => {
+              SessionManager.setMouvements(result.data.mouvements)
+              window.location = '/trading'
             })
           })
-
-
         }
       });
 };
 
+  return (
+      <Container className='login_container' id="container">
+        <Row>
+          {show === true &&
+              <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                <Alert.Heading>Erreur</Alert.Heading>
+                <p>
+                  {loginStatus}
+                </p>
+              </Alert>
+          }
+          <Col className='login_form'>
+            <Form>
+              <FloatingLabel
+                  controlId="floatingInput"
+                  label="Adresse électronique"
+                  className="mb-3"
+                  style={{color: 'black'}}
+              >
+                <Form.Control type="email" placeholder="nom@exemple.com" onChange={(e) => {
+                  setMail(e.target.value);}}/>
+              </FloatingLabel>
+              <FloatingLabel controlId="floatingPassword" label="Mot de passe" style={{color: 'black'}}>
+                <Form.Control type="password" placeholder="Password" onChange={(e) => {
+                  setMdp(e.target.value);}}/>
+              </FloatingLabel>
 
-  if (ReactSession.get('user'))
-  {
-    return(
-        <Navigate to="/trading" />
-    );
-  }
-  else {
-    return (
-        <Container className='login_container' id="container">
-          <Row>
-            {show === true &&
-                <Alert variant="danger" onClose={() => setShow(false)} dismissible>
-                  <Alert.Heading>Erreur</Alert.Heading>
-                  <p>
-                    {loginStatus}
-                  </p>
-                </Alert>
-            }
-            <Col className='login_form'>
-              <Form>
-                <FloatingLabel
-                    controlId="floatingInput"
-                    label="Adresse électronique"
-                    className="mb-3"
-                    style={{color: 'black'}}
-                >
-                  <Form.Control type="email" placeholder="nom@exemple.com" onChange={(e) => {
-                    setMail(e.target.value);}}/>
-                </FloatingLabel>
-                <FloatingLabel controlId="floatingPassword" label="Mot de passe" style={{color: 'black'}}>
-                  <Form.Control type="password" placeholder="Password" onChange={(e) => {
-                    setMdp(e.target.value);}}/>
-                </FloatingLabel>
+              <Row className="mt-2">
+                <Button className="btn btn-success" onClick={login}>Connexion</Button>
+                <Link to="/page2" className="btnregisterlink"><Button className="btn btn-warning btnregister">Inscription</Button></Link>
+              </Row>
 
-                <Row className="mt-2">
-                  <Button className="btn btn-success" onClick={login}>Connexion</Button>
-                  <Link to="/page2" className="btnregisterlink"><Button className="btn btn-warning btnregister">Inscription</Button></Link>
-                </Row>
+            </Form>
+          </Col>
 
-              </Form>
-            </Col>
+        </Row>
+      </Container>
+  );
 
-          </Row>
-        </Container>
-    );
-  }
 
-  }
+}
   
-  export default Login;
+export default Login;
 
