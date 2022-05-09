@@ -74,7 +74,8 @@ function Trading(){
     })
   }
 
-  const vente = () =>{
+  const vente = (e) =>{
+    e.preventDefault();
     Axios.post('http://localhost:9000/cotations/sell', {
       userToken: user.loginToken,
       isinCode: isin_code,

@@ -1,14 +1,16 @@
 import '../App.css';
 import React from 'react';
-import { Container,Form, FloatingLabel, Row, Col} from 'react-bootstrap';
+import {Container, Form, FloatingLabel, Row, Col, Alert} from 'react-bootstrap';
 import { useState} from 'react';
 import Axios from "axios";
+import SessionManager from "../Session/Session";
 
 
 function Register() {
   
   document.title = 'Salle de marché : Inscription';
 
+  const [show, setShow] = useState(false)
   const [firstName,setFirstName] = useState("");
   const [lastName,setLastName] = useState("");
   const [email,setEmail] = useState("");
@@ -17,7 +19,8 @@ function Register() {
   const [registerStatus, setRegisterStatus] = useState("");
 
 
-  const register = () => {
+  const register = (e) => {
+    e.preventDefault();
     Axios.post("http://localhost:9000/register", {
       firstName: firstName,
       lastName: lastName,
@@ -28,8 +31,10 @@ function Register() {
       console.log(response.data.status)
         if (response.data.status==="ERROR"){
             setRegisterStatus(response.data.message);
+            setShow(true)
         }
         if (response.data.status==="SUCCESS"){
+            window.location = '/login'
         }
       });
   };
@@ -37,6 +42,14 @@ function Register() {
   return (
         <Container fluid className='register_block'>
             <img src="/img/Logo2.png"/>
+            {show === true &&
+                <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+                    <Alert.Heading>Erreur</Alert.Heading>
+                    <p>
+                        {registerStatus}
+                    </p>
+                </Alert>
+            }
               <Form>
                    <Row>
                           <Col>
@@ -70,7 +83,7 @@ function Register() {
 
                   <Row>
                       <Col><button class="btn btn-danger" onClick={() => { window.location = '/login'}}>Retour</button></Col>
-                      <Col><button class="btn btn-primary" onClick={register}>S'inscrire</button></Col>
+                      <Col><button class="btn btn-primary" onClick={register} type="submit">S'inscrire</button></Col>
                   </Row>
               </Form>
 
