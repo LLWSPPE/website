@@ -134,6 +134,7 @@ function Trading(){
               <Nav className="me-auto">
                 <Nav.Link onClick={() => {setModalShow(true); chargerPortefeuille()}}>Mon portefeuille</Nav.Link>
                 <Nav.Link onClick={() => {setMouvementShow(true); chargerMouvements() }}>Mes opérations</Nav.Link>
+                <Nav.Link onClick={() => {window.location = '/logout'; }}><Badge bg="warning" >Déconnexion</Badge></Nav.Link>
               </Nav>
               <Navbar.Toggle />
               <Navbar.Collapse className="justify-content-end">
@@ -178,8 +179,8 @@ function Trading(){
                   <Row>
                     <Form className="row">
                       <Col>
-                        <Form.Control type="number" min={1} step="1" id="" aria-describedby="" placeholder='Quantité (max. 100)' onChange={(e) => {
-                          setQuantiteVente(e.target.value);}}/>
+                        <Form.Control type="number" min={1} step="1" id="" aria-describedby="" placeholder='Quantité (max. 100)' onChange={(k) => {
+                          setQuantiteVente(k.target.value);}}/>
                       </Col>
                       <Col><Button type="number" min="1" max="100" step="1" variant="btn btn-warning" onClick={vente}>Vente</Button></Col>
                     </Form>

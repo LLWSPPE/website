@@ -1,7 +1,5 @@
-import {ReactSession} from "react-client-session";
 import {Badge, Button, ListGroup, Modal} from "react-bootstrap";
 import React from "react";
-import SessionManager from "../Session/Session";
 
 
 //Fenêtre modale pour afficher le portefeuille
@@ -17,12 +15,7 @@ export function FenetrePortefeuille(props) {
     }
 
     return (
-        <Modal
-            {...props}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
+        <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
                     Portefeuill d'actifs
@@ -50,17 +43,12 @@ export function FenetreMouvements(props) {
 
     if(mouvements.length > 0){
         mouvements.reverse().map(item => {
-            listeMouvements.push(<ListGroup.Item variant={item.type_mouvement === "BUY" ? "warning" : "success"}><strong>{item.type_mouvement === "BUY" ? "ACHAT" : "VENTE"}</strong> (ISIN: {item.isin_code} - Montant : <Badge bg="primary">{item.montant} € </Badge> Quantité : <Badge bg="primary" pill>{item.quantite}</Badge></ListGroup.Item>)
+            listeMouvements.push(<ListGroup.Item variant={item.type_mouvement === "BUY" ? "warning" : "success"}>[{Date(item.date_mouvement).toLocaleString()}] <strong>{item.type_mouvement === "BUY" ? "ACHAT" : "VENTE"}</strong> (ISIN: {item.isin_code} - Montant : <Badge bg="primary">{item.montant} € </Badge> Quantité : <Badge bg="primary" pill>{item.quantite}</Badge></ListGroup.Item>)
         });
     }
 
     return (
-        <Modal
-            {...props}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
+        <Modal {...props} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
                     Mes opérations

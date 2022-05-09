@@ -34,15 +34,7 @@ function Login() {
           let resultat = response.data.result;
 
           SessionManager.setAuth(resultat[0])
-
-          Axios.get('http://localhost:9000/users/portefeuille/'+SessionManager.getId()).then(result => {
-            SessionManager.setPortefeuille(result.data.result)
-
-            Axios.get('http://localhost:9000/users/'+SessionManager.getId()+'/mouvements/').then(result => {
-              SessionManager.setMouvements(result.data.mouvements)
-              window.location = '/trading'
-            })
-          })
+          window.location = '/trading'
         }
       });
 };
