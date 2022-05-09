@@ -1,6 +1,6 @@
 import '../App.css';
 import React from 'react';
-import { Container} from 'react-bootstrap';
+import { Container,Form, FloatingLabel, Row, Col} from 'react-bootstrap';
 import { useState} from 'react';
 import Axios from "axios";
 
@@ -14,7 +14,8 @@ function Register() {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [confirmPassword,setConfirmPassword] = useState("");
-  
+  const [registerStatus, setRegisterStatus] = useState("");
+
 
   const register = () => {
     Axios.post("http://localhost:9000/register", {
@@ -26,45 +27,52 @@ function Register() {
     }).then((response) => {
       console.log(response.data.status)
         if (response.data.status==="ERROR"){
-          console.log("Il y a eu une erreur. Veuillez réessayer.");
+            setRegisterStatus(response.data.message);
         }
         if (response.data.status==="SUCCESS"){
-          console.log("Cool");
         }
       });
   };
  
   return (
         <Container fluid className='register_block'>
+            <img src="/img/Logo2.png"/>
+              <Form>
+                   <Row>
+                          <Col>
+                   <FloatingLabel controlId="floatingInput" label="Prénom" className="mb-3" style={{color: 'black'}}>
+                        <Form.Control required minlength="2" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e) => {
+                                  setFirstName(e.target.value);}}/>
+                   </FloatingLabel>
+                          </Col>
+                       <Col>
+                      <FloatingLabel controlId="floatingInput" label="Nom" className="mb-3" style={{color: 'black'}}>
+                        <Form.Control minlength="2" required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e) => {
+                                  setLastName(e.target.value);}}/>
+                      </FloatingLabel>
+                       </Col>
+                   </Row>
+                  <FloatingLabel controlId="floatingInput" label="Adresse électronique" className="mb-3" style={{color: 'black'}}>
+                    <Form.Control required type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e) => {
+                              setEmail(e.target.value);}}/>
+                  </FloatingLabel>
+                  <FloatingLabel controlId="floatingInput" label="Mot de passe" className="mb-3" style={{color: 'black'}}>
 
-                <form action="http://localhost:3000" method='GET'>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Prenom</label>
-                <input required minlength="2" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e) => {
-                          setFirstName(e.target.value);}}/>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Nom</label>
-                <input minlength="2" required type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e) => {
-                          setLastName(e.target.value);}}/>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email</label>
-                <input required type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" onChange={(e) => {
-                          setEmail(e.target.value);}}/>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Mot de passe</label>
-                <input required minlength="8" type="password" class="form-control" id="password" onChange={(e) => {
-                          setPassword(e.target.value);}}/>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Confirmation Mot de passe</label>
-                <input required minlength="8" type="password" class="form-control" id="confirm_password" onChange={(e) => {
-                          setConfirmPassword(e.target.value);}}/>
-              </div>
-              <button class="btn btn-primary" onClick={register}>S'inscrire</button>
-            </form>
+                  <Form.Control required minlength="8" type="password" class="form-control" id="password" onChange={(e) => {
+                              setPassword(e.target.value);}}/>
+                  </FloatingLabel>
+
+                   <FloatingLabel controlId="floatingInput" label="Confirmation du mot de passe" className="mb-3" style={{color: 'black'}}>
+
+                    <Form.Control required minlength="8" type="password" class="form-control" id="confirm_password" onChange={(e) => {
+                              setConfirmPassword(e.target.value);}}/>
+                   </FloatingLabel>
+
+                  <Row>
+                      <Col><button class="btn btn-danger" onClick={() => { window.location = '/login'}}>Retour</button></Col>
+                      <Col><button class="btn btn-primary" onClick={register}>S'inscrire</button></Col>
+                  </Row>
+              </Form>
 
       </Container>
     );

@@ -15,6 +15,7 @@ div#root {
   height: 100%;
 }
 
+
 canvas
 {
   width: 100%;
@@ -24,17 +25,25 @@ canvas
 .login_container.container {
   width: 500px;
   height: auto;
-  background-color: rgba(103,210,252,.4);
   align-items: center;
   padding: 50px;
   position: relative;
-  top: 30%;
+  top: 20vh;
   border-radius: 10px;
+}
+
+.login_container > img {
+  text-align: center;
 }
 
 .login_form
 {
   color: white;
+}
+
+.login_button > button {
+  box-sizing: border-box;
+  margin: 1px;
 }
 
 .login_button
@@ -51,6 +60,10 @@ canvas
 .btnregisterlink {
   margin-top: 20px;
   padding: 0;
+}
+
+.test {
+  box-sizing: border-box;margin: 1px;
 }
 
 .trading_back

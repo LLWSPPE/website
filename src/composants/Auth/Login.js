@@ -41,6 +41,7 @@ function Login() {
 
   return (
       <Container className='login_container' id="container">
+        <img src="/img/Logo2.png"/>
         <Row>
           {show === true &&
               <Alert variant="danger" onClose={() => setShow(false)} dismissible>
@@ -52,12 +53,7 @@ function Login() {
           }
           <Col className='login_form'>
             <Form>
-              <FloatingLabel
-                  controlId="floatingInput"
-                  label="Adresse électronique"
-                  className="mb-3"
-                  style={{color: 'black'}}
-              >
+              <FloatingLabel controlId="floatingInput" label="Adresse électronique" className="mb-3" style={{color: 'black'}}>
                 <Form.Control type="email" placeholder="nom@exemple.com" onChange={(e) => {
                   setMail(e.target.value);}}/>
               </FloatingLabel>
@@ -66,7 +62,7 @@ function Login() {
                   setMdp(e.target.value);}}/>
               </FloatingLabel>
 
-              <Row className="mt-2">
+              <Row className="mt-2 test">
                 <Button className="btn btn-success" onClick={login}>Connexion</Button>
                 <Link to="/register" className="btnregisterlink"><Button className="btn btn-warning btnregister">Inscription</Button></Link>
               </Row>
