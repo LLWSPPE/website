@@ -6,13 +6,15 @@ import SessionManager from "../Session/Session";
 
 //Fenêtre modale pour afficher le portefeuille
 export function FenetrePortefeuille(props) {
-    const portefeuille = SessionManager.getPortefeuille()
+    const portefeuille = props.portefeuille
 
     const listePortefeuille = []
 
-    portefeuille.map(item => {
-        listePortefeuille.push(<ListGroup.Item><strong>{item.full_name}</strong> (ISIN: {item.isin_code} - Quantité : <Badge bg="primary">{item.quantite}</Badge> </ListGroup.Item>)
-    });
+    if(portefeuille.length > 0){
+        portefeuille.map(item => {
+            listePortefeuille.push(<ListGroup.Item><strong>{item.full_name}</strong> (ISIN: {item.isin_code} - Quantité : <Badge bg="primary">{item.quantite}</Badge> </ListGroup.Item>)
+        });
+    }
 
     return (
         <Modal
@@ -40,14 +42,17 @@ export function FenetrePortefeuille(props) {
 
 //Fenêtre modale pour afficher les mouvements (opérations)
 export function FenetreMouvements(props) {
-    const mouvements = SessionManager.getMouvements()
+    const mouvements = props.mouvements
     console.log(mouvements)
+    console.log(props.mouvements)
 
     const listeMouvements = []
 
-    mouvements.map(item => {
-        listeMouvements.push(<ListGroup.Item variant={item.type_mouvement === "BUY" ? "warning" : "success"}><strong>{item.type_mouvement === "BUY" ? "ACHAT" : "VENTE"}</strong> (ISIN: {item.isin_code} - Montant : <Badge bg="primary">{item.montant} € </Badge> Quantité : <Badge bg="primary" pill>{item.quantite}</Badge></ListGroup.Item>)
-    });
+    if(mouvements.length > 0){
+        mouvements.reverse().map(item => {
+            listeMouvements.push(<ListGroup.Item variant={item.type_mouvement === "BUY" ? "warning" : "success"}><strong>{item.type_mouvement === "BUY" ? "ACHAT" : "VENTE"}</strong> (ISIN: {item.isin_code} - Montant : <Badge bg="primary">{item.montant} € </Badge> Quantité : <Badge bg="primary" pill>{item.quantite}</Badge></ListGroup.Item>)
+        });
+    }
 
     return (
         <Modal

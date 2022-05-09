@@ -76,7 +76,7 @@ function Login() {
 
               <Row className="mt-2">
                 <Button className="btn btn-success" onClick={login}>Connexion</Button>
-                <Link to="/page2" className="btnregisterlink"><Button className="btn btn-warning btnregister">Inscription</Button></Link>
+                <Link to="/register" className="btnregisterlink"><Button className="btn btn-warning btnregister">Inscription</Button></Link>
               </Row>
 
             </Form>

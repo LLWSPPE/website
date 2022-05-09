@@ -12,6 +12,11 @@ const SessionManager = {
         localStorage.setItem('portefeuille', JSON.stringify(portefeuille))
     },
 
+    setBudget(budget){
+        let user = this.getUser()
+        localStorage.setItem(user.budget, budget)
+    },
+
     getMouvements() {
         return JSON.parse(localStorage.getItem('mouvements'))
     },
